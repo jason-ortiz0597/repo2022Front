@@ -65,7 +65,7 @@ export const updateProvaider = async (req, res) => {
     }
 }
 
-//update status provaider
+
 export const updateStatusProvaider = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
@@ -81,5 +81,11 @@ export const updateStatusProvaider = async (req, res) => {
         return res.status(500).json({message: error.message});
     }
 }
+
+
+
+
+
+
 
 

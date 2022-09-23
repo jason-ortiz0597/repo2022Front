@@ -1,7 +1,13 @@
 import { Router } from "express";
 
-import {createProvaider, deleteProvaider, getProvaider, 
-    getProvaiderActive, updateProvaider,updateStatusProvaider } from "../../controllers/products/provaiderController.js";
+import {
+  createProvaider,
+  deleteProvaider,
+  getProvaider,
+  getProvaiderActive,
+  updateProvaider,
+  updateStatusProvaider,
+} from "../../controllers/products/provaiderController.js";
 
 const router = Router();
 
@@ -12,5 +18,6 @@ router.delete("/delete/:id", deleteProvaider);
 router.put("/update/:id", updateProvaider);
 router.put("/updateStatus/:id", updateStatusProvaider);
 
-export default router;
 
+
+export default router;

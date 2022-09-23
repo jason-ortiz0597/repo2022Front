@@ -9,24 +9,24 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
 
-    provaider: [{
+    provaider: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Provaider'
-    }],
+    },
 
-    typeProduct: [{
+    typeProduct: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'TypeProduct'
-    }],
+    },
 
-    warehouse: [{
+    warehouse: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Warehouse'
-    }],
+    },
 
-    hallways: {
+    hallway: {
         type: String
     }, 
 
@@ -52,6 +52,12 @@ const productSchema = new mongoose.Schema({
     dayMargin: {
         type: Number,
         required: true
+    },
+    
+    image: {
+
+        public_id: String,
+        secure_url: String
     },
 
     status: {

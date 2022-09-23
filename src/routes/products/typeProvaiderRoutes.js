@@ -1,7 +1,13 @@
 import { Router } from "express";
 
-import {createTypeProvaider, getTypeProvaider, deleteTypeProvaider,
-     getTypeProvaiderActive , updateStatusTypeProvaider, updateTypeProvaider} from "../../controllers/products/tyProvaiderController.js";
+import {
+  createTypeProvaider,
+  getTypeProvaider,
+  deleteTypeProvaider,
+  getTypeProvaiderActive,
+  updateStatusTypeProvaider,
+  updateTypeProvaider,
+} from "../../controllers/products/tyProvaiderController.js";
 
 const router = Router();
 
@@ -14,5 +20,5 @@ router.get("/listActive", getTypeProvaiderActive);
 router.put("/updateStatus/:id", updateStatusTypeProvaider);
 router.put("/update/:id", updateTypeProvaider);
 
-export default router;
 
+export default router;
