@@ -4,12 +4,11 @@ import mongoose from "mongoose";
 const entriesSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "products",
+        ref: "Product",
         required: true
     },
     quantity: {
-        type: Number,
-        required: true
+        type: Number
     },
     date: {
         type: Date,
@@ -23,16 +22,19 @@ const entriesSchema = new mongoose.Schema({
         default: 'pending'
     },
     price : {
-        type: Number,
-        required: true
+        type: Number
+        
     },
 
     total : {
         type: Number,
-        required: true
+        default: 0
     },
+},
+{
 
-    
+    timestamps: true,
+    versionKey: false
 });
 
-export default mongoose.model("entries", entriesSchema);
+export default mongoose.model("Entries", entriesSchema);

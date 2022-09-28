@@ -67,6 +67,8 @@ const productSchema = new mongoose.Schema({
         enum: ['active', 'inactive', 'pending', 'blocked', 'deleted'],
         default: 'pending'
     }
+
+
     
 },
 {

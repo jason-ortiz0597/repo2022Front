@@ -37,7 +37,7 @@ export const createProduct = async (req, res) => {
 //update product with imagen cloudinary
 export const updateProduct = async (req, res) => {
     try {
-        const { name, provaider, typeProduct, warehouse, hallway, shelf, stock, dateOfExpiration, price, dayMargin, status } = req.body;
+        const { name, provaider, typeProduct, warehouse, hallway, shelf, stock, dateOfExpiration, price, dayMargin, status, minStock, maxStock } = req.body;
         const product = await ProductModel.findById(req.params.id);
         if (product) {
             product.name = name;
@@ -51,6 +51,8 @@ export const updateProduct = async (req, res) => {
             product.price = price;
             product.dayMargin = dayMargin;
             product.status = status;
+            product.minStock = minStock;
+            product.maxStock = maxStock;
             if (req.files?.image) {
                 if (product.image.public_id) {
                     await deleteImage(product.image.public_id);

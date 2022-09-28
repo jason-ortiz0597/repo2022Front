@@ -70,13 +70,13 @@ const userSchema = new Schema({
     versionKey: false
 });
 
-userSchema.pre('save', async function(next) {
+/*userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         return next();
     }
     const hashedPassword = bcryptjs.hash(this.password, 10);
     this.password = hashedPassword;
     next();
-})
+})*/
 
 export default mongoose.model('User', userSchema);

@@ -15,7 +15,7 @@ export const users = async (req, res) => {
         res.status(200).json({users, type_users, points, positions });
     } catch (error) {
         res.status(500).json(error);
-    }
+    } 
 }
 
 //list user where state is distint of deleted
