@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const productSchema = new mongoose.Schema({
 
     name: {
-
         type: String,
         required: true,
         trim: true
@@ -26,6 +25,26 @@ const productSchema = new mongoose.Schema({
         ref: 'Warehouse'
     },
 
+
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Category'
+    },
+
+    subCategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Subcategory'
+    }, 
+
+    unit: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Unit'
+    },
+
+    
     hallway: {
         type: String
     }, 
@@ -34,10 +53,13 @@ const productSchema = new mongoose.Schema({
         type: String
     },
 
-    stock: {
+    minStock: {
         type: Number,
     },
 
+    maxStock: {
+        type: Number,
+    },
 
     dateOfExpiration: {
         type: Date,
@@ -59,7 +81,7 @@ const productSchema = new mongoose.Schema({
         public_id: String,
         secure_url: String
     },
-
+    
     status: {
         
         type: String,
@@ -68,8 +90,6 @@ const productSchema = new mongoose.Schema({
         default: 'pending'
     }
 
-
-    
 },
 {
     timestamps: true,

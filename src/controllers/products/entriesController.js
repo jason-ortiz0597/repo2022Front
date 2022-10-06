@@ -1,18 +1,19 @@
 import EntriesModel from "../../models/products/EntriesModel.js";
+import typeEntrieModel from "../../models/products/typeEntrieModel.js";
 
 // Create new entries and add to total product
 
 export const createEntries = async (req, res) => {
     try {
-        const { product, quantity, price, date, status } = req.body;
+        const { product, quantity, price, date,typeEntries, status } = req.body;
         const exitsproduct = await EntriesModel.findOne({ product });
         if (exitsproduct) {
             
             const total = exitsproduct.total + quantity;
-            const entries = await EntriesModel.findByIdAndUpdate(exitsproduct._id, { quantity, price, date, status, total },{new:true});
+            const entries = await EntriesModel.findByIdAndUpdate(exitsproduct._id, { quantity, price, date,typeEntries, status, total }, { new: true });
             res.json({ message: "Entries updated successfully" });
         } else {
-            const entries = new EntriesModel({ product, quantity, price, date, status });
+            const entries = new EntriesModel({ product, quantity, price, date, typeEntries, status });
             const total = entries.total + quantity;
             entries.total = total;
             await entries.save();
@@ -24,13 +25,11 @@ export const createEntries = async (req, res) => {
 }
 
 
-
-
 // Get all entries
 
 export const getEntries = async (req, res) => {
     try {
-        const entries = await EntriesModel.find().populate('product','name');
+        const entries = await EntriesModel.find().populate('product','name').populate('typeEntries','name');
         if(entries.length === 0){
             res.status(404).json({ message: "No entries found" });
         }else {
@@ -43,22 +42,6 @@ export const getEntries = async (req, res) => {
     }
 }
 
-
-// Get entries by id
-
-export const getEntriesById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const entries = await EntriesModel.findById(id);
-        if(entries){
-            res.json(entries);
-        }else {
-            res.status(404).json({ message: "No entries found" });
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
 
 // Update entries
 
@@ -93,6 +76,40 @@ export const deleteEntries = async (req, res) => {
     }
 }
 
+export const getTypeEntries = async (req, res) => {
+    try {
+        const typeEntries = await typeEntrieModel.find();
+        if(typeEntries.length === 0){
+            res.status(404).json({ message: "No type entries found" });
+        }else {
+            res.json(typeEntries);
+        }
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+// Create new type entries
+
+export const createTypeEntries = async (req, res) => {
+    try {
+        const { name,description, status } = req.body;
+        const exitsTypeEntries = await typeEntrieModel.findOne({ name });
+        if (exitsTypeEntries) {
+            res.status(404).json({ message: "Type entries already exists" });
+        } else {
+            const typeEntries = new typeEntrieModel({ name,description,status });
+            await typeEntries.save();
+            res.json({ message: "Type entries created successfully" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+/*
 // Get entries by product
 
 export const getEntriesByProduct = async (req, res) => {
@@ -157,22 +174,6 @@ export const getEntriesByDateRange = async (req, res) => {
     }
 }
 
-// Get entries by product and status
-
-export const getEntriesByProductAndStatus = async (req, res) => {
-    try {
-        const { id, status } = req.params;
-        const entries = await EntriesModel.find({ product: id, status: status });
-        if(entries.length === 0){
-            res.status(404).json({ message: "No entries found" });
-        }else {
-            res.json(entries);
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
 // Get entries by product and date
 
 export const getEntriesByProductAndDate = async (req, res) => {
@@ -205,38 +206,7 @@ export const getEntriesByProductAndDateRange = async (req, res) => {
     }
 }
 
-// Get entries by product, status and date
 
-export const getEntriesByProductStatusAndDate = async (req, res) => {
-
-    try {
-        const { id, status, date } = req.params;
-        const entries = await EntriesModel.find({ product: id, status: status, date: date });
-        if(entries.length === 0){
-            res.status(404).json({ message: "No entries found" });
-        }else {
-            res.json(entries);
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
-
-// Get entries by product, status and date range
-
-export const getEntriesByProductStatusAndDateRange = async (req, res) => {
-    try {
-        const { id, status, start, end } = req.params;
-        const entries = await EntriesModel.find({ product: id, status: status, date: { $gte: start, $lte: end } });
-        if(entries.length === 0){
-            res.status(404).json({ message: "No entries found" });
-        }else {
-            res.json(entries);
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-}
 
 // Get entries by product, date and date range
 
@@ -254,21 +224,21 @@ export const getEntriesByProductDateAndDateRange = async (req, res) => {
     }
 }
 
-// Get entries by product, status, date and date range
-
-export const getEntriesByProductStatusDateAndDateRange = async (req, res) => {
+// Get entries by id
+export const getEntriesById = async (req, res) => {
     try {
-        const { id, status, date, start, end } = req.params;
-        const entries = await EntriesModel.find({ product: id, status: status, date: date, date: { $gte: start, $lte: end } });
-        if(entries.length === 0){
-            res.status(404).json({ message: "No entries found" });
-        }else {
+        const { id } = req.params;
+        const entries = await EntriesModel.findById(id);
+        if(entries){
             res.json(entries);
+        }else {
+            res.status(404).json({ message: "No entries found" });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
+*/
 
 
 

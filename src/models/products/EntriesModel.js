@@ -2,11 +2,19 @@ import mongoose from "mongoose";
 
 // entries model inventory
 const entriesSchema = new mongoose.Schema({
-    product: {
+    product: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         required: true
+    }],
+
+    typeEntries: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TypeEntries",
+        required: true
     },
+    
+
     quantity: {
         type: Number
     },
@@ -21,6 +29,7 @@ const entriesSchema = new mongoose.Schema({
         enum: ['active', 'inactive', 'pending', 'blocked', 'deleted'],
         default: 'pending'
     },
+
     price : {
         type: Number
         

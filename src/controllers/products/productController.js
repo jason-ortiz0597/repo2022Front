@@ -1,25 +1,34 @@
 
 import ProductModel from "../../models/products/ProductModel.js";
-
+import warehouseModel from "../../models/products/warehouseModel.js";
 import {deleteImage,updateImage,uploadImage } from "../../database/cloudinary.js";
 import fs from 'fs-extra'
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await ProductModel.find().populate('warehouse','name').populate('typeProduct','name').populate('provaider','legalReason');
+        const products = await ProductModel.find().populate({path:'subCategory',select:'name'}).populate({path:'category',select:'name'}).populate({path:'typeProduct',select:'name'})
+        .populate({path:'warehouse',select:'name'}).populate({path:'provaider',select:'legalReason'}).populate({path:'unit',select:'name'});
         res.status(200).json(products);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
 }
 
-//create product with image in cloudinary
+
+export const getProductbyWarehouse = async (req, res) => {
+    try {
+        const products = await ProductModel.find({warehouse:req.params.id}).populate({path:'warehouse',select:'name'});
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
 
 export const createProduct = async (req, res) => {
     try {
-        const { name, provaider, typeProduct, warehouse, hallway, shelf, stock, dateOfExpiration, price, dayMargin, status } = req.body;
-        const product = new ProductModel({ name, provaider, typeProduct, warehouse, hallway, shelf, stock, dateOfExpiration, price, dayMargin, status });
-        if (req.files?.image) {
+        const { name, provaider, typeProduct, warehouse,category,subCategory, unit  ,hallway, shelf, minStock, maxStock, dateOfExpiration, price, dayMargin, status } = req.body;
+        const product = new ProductModel({ name, provaider, typeProduct, warehouse,category,subCategory, unit, hallway, shelf, minStock,maxStock, dateOfExpiration, price, dayMargin, status });
+        if (req.files?.image  ) {
             const image = await uploadImage(req.files.image.tempFilePath);
             product.image = {
                 public_id: image.public_id,
@@ -34,25 +43,30 @@ export const createProduct = async (req, res) => {
     }
 }
 
-//update product with imagen cloudinary
+
+
+
 export const updateProduct = async (req, res) => {
     try {
-        const { name, provaider, typeProduct, warehouse, hallway, shelf, stock, dateOfExpiration, price, dayMargin, status, minStock, maxStock } = req.body;
+        const { name, provaider, typeProduct, warehouse, category, subCategory,unit, hallway, shelf,minStock, maxStock, dateOfExpiration, price, dayMargin, status } = req.body;
         const product = await ProductModel.findById(req.params.id);
         if (product) {
             product.name = name;
             product.provaider = provaider;
             product.typeProduct = typeProduct;
             product.warehouse = warehouse;
+            product.category = category;
+            product.subCategory = subCategory;
+            product.unit = unit;
             product.hallway = hallway;
             product.shelf = shelf;
-            product.stock = stock;
+            product.minStock = minStock;
+            product.maxStock = maxStock;
             product.dateOfExpiration = dateOfExpiration;
             product.price = price;
             product.dayMargin = dayMargin;
             product.status = status;
-            product.minStock = minStock;
-            product.maxStock = maxStock;
+            
             if (req.files?.image) {
                 if (product.image.public_id) {
                     await deleteImage(product.image.public_id);
@@ -74,7 +88,7 @@ export const updateProduct = async (req, res) => {
     }
 }
 
-//delete product 
+ 
 export const deleteProduct = async (req, res) => {
     try {
         const product = await ProductModel.findByIdAndDelete(req.params.id);

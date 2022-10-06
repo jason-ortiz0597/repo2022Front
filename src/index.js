@@ -10,6 +10,8 @@ import typeProductRoutes from "./routes/products/typeProductRoutes.js";
 import warehouseRoutes from "./routes/products/warehouseRoutes.js";
 import productRoutes from "./routes/products/productRoutes.js";
 import entriesRoutes from "./routes/products/entriesRoutes.js";
+import categoryRoutes from "./routes/products/categoryRoutes.js";
+import unitRoutes from "./routes/products/unitRoutes.js";
 import serveStatic from 'serve-static';
 import history from 'connect-history-api-fallback';
 import path from 'path';
@@ -35,6 +37,8 @@ app.use('/api/typeProduct', typeProductRoutes);
 app.use('/api/warehouse', warehouseRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/entries', entriesRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/unit', unitRoutes);
 
 app.use(history())
 app.use(serveStatic(__dirname + '/dist/spa'))
