@@ -1,21 +1,63 @@
 import EntriesModel from "../../models/products/EntriesModel.js";
 import typeEntrieModel from "../../models/products/typeEntrieModel.js";
+import ProductsModel from "../../models/products/ProductModel.js";
+
+
 
 // Create new entries and add to total product
-
 export const createEntries = async (req, res) => {
     try {
         const { product, quantity, price, date,typeEntries, status } = req.body;
         const exitsproduct = await EntriesModel.findOne({ product });
+      //const products = await ProductsModel.findById ( product );
+        
         if (exitsproduct) {
+        //    const minStock = products.minStock;
+         //   const maxStock = products.maxStock;
+           const total = exitsproduct.total + quantity;
+         //   if (total < minStock) {
+         //       exitsproduct.excess = minStock - total;
+        //    } else if (total > maxStock) {
+        //       exitsproduct.excess = total - maxStock;
+         //   } else {
+        //         exitsproduct.excess = 0;
+        //    }
+            //find and update and create new entries
+            const entries = await EntriesModel.findOneAndUpdate(
+                { product },
+                {
+                    $push: {
+                        entries: {
+                            quantity,
+                            price,
+                            date,
+                            typeEntries,
+                            status
+                        }
+                    },
+                    total
+                },
+                { new: true }
+            );
+        //    const entries = await EntriesModel.findByIdAndUpdate(exitsproduct._id, { quantity, price, date,typeEntries, status, total });
             
-            const total = exitsproduct.total + quantity;
-            const entries = await EntriesModel.findByIdAndUpdate(exitsproduct._id, { quantity, price, date,typeEntries, status, total }, { new: true });
             res.json({ message: "Entries updated successfully" });
         } else {
             const entries = new EntriesModel({ product, quantity, price, date, typeEntries, status });
             const total = entries.total + quantity;
-            entries.total = total;
+            entries.total = total; 
+        
+          //  const minStock = products.minStock;
+           //const maxStock = products.maxStock;
+    
+           // if (total <= minStock) {
+           //     entries.excess = minStock - total;
+           // } else if (total >= maxStock) {
+           //     entries.excess = total - maxStock;
+         //   } else {
+         //       entries.excess = 0;
+         //   }
+
             await entries.save();
             res.json({ message: "Entries created successfully" });
         }
@@ -26,7 +68,6 @@ export const createEntries = async (req, res) => {
 
 
 // Get all entries
-
 export const getEntries = async (req, res) => {
     try {
         const entries = await EntriesModel.find().populate('product','name').populate('typeEntries','name');
@@ -44,7 +85,6 @@ export const getEntries = async (req, res) => {
 
 
 // Update entries
-
 export const updateEntries = async (req, res) => {
     try {
         const { id } = req.params;
@@ -239,6 +279,9 @@ export const getEntriesById = async (req, res) => {
     }
 }
 */
+
+
+
 
 
 

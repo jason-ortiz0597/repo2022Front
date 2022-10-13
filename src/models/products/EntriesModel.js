@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 // entries model inventory
 const entriesSchema = new mongoose.Schema({
-    product: [{
+    product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         required: true
-    }],
+    },
 
     typeEntries: {
         type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +39,14 @@ const entriesSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+
+   /* excess: {
+        type: Number,
+        default: 0
+    },*/
+
+
+    
 },
 {
 

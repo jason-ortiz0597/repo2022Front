@@ -1,4 +1,6 @@
 import express from 'express';
+import {Server as SocketServer} from 'socket.io'
+import http from 'http';
 import "dotenv/config";
 import "./database/db_connect.js"
 import authRoutes from "./routes/users/authRoutes.js";
@@ -12,6 +14,7 @@ import productRoutes from "./routes/products/productRoutes.js";
 import entriesRoutes from "./routes/products/entriesRoutes.js";
 import categoryRoutes from "./routes/products/categoryRoutes.js";
 import unitRoutes from "./routes/products/unitRoutes.js";
+import exitsRoutes from "./routes/products/exitsRoutes.js";
 import serveStatic from 'serve-static';
 import history from 'connect-history-api-fallback';
 import path from 'path';
@@ -19,6 +22,9 @@ import { fileURLToPath } from 'url';
 import cors from "cors";
 import morgan from "morgan";
 const app = express();
+
+
+
 app.use(cors());
 app.use(morgan("dev"));
 const __filename = fileURLToPath(import.meta.url);
@@ -40,8 +46,21 @@ app.use('/api/entries', entriesRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/unit', unitRoutes);
 
+app.use('/api/exits', exitsRoutes);
+
 app.use(history())
 app.use(serveStatic(__dirname + '/dist/spa'))
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Puerto corriendo en: ${port}`));
+const server = http.createServer(app);
+const io = new SocketServer(server);
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`);
+});
+
+
+
+
+
+
+
