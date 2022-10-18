@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 // exits model inventory
 const exitsSchema = new mongoose.Schema(
   {
-    product: {
+    entry: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Entry",
+      ref: "Entries",
       required: true,
     },
 

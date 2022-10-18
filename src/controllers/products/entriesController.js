@@ -149,6 +149,8 @@ export const createTypeEntries = async (req, res) => {
 }
 
 
+
+
 /*
 // Get entries by product
 

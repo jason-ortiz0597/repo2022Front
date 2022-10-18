@@ -4,7 +4,8 @@ import bcryptjs from "bcryptjs";
 import nodemailer from 'nodemailer';
 
 export const verify_signin = async (req) => {
-    const { username, password } = req.body;
+    try {
+        const { username, password } = req.body;
     const user = await User.findOne({$or: [{email: username}, {username: username}]}, {_id: 1, type:1, username: 1, password: 1});
     if (!user) { 
         return { message: 'Usuario no encontrado' };
@@ -14,6 +15,13 @@ export const verify_signin = async (req) => {
         return { message: 'Contraseña incorrecta' };
     }
     return { user, message: 'Usuario verificado' };
+    
+    } catch (error) {
+
+
+        return { message: 'No se pudo verificar el usuario' };
+    }
+
 }
 
 export const generateTokens = async (userId, username) => {
