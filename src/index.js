@@ -16,6 +16,7 @@ import categoryRoutes from "./routes/products/categoryRoutes.js";
 import unitRoutes from "./routes/products/unitRoutes.js";
 import exitsRoutes from "./routes/products/exitsRoutes.js";
 import orderRoutes from "./routes/order/orderRoutes.js";
+import purchaseRoutes from "./routes/order/purchaseRoutes.js";
 import serveStatic from 'serve-static';
 import history from 'connect-history-api-fallback';
 import path from 'path';
@@ -50,6 +51,7 @@ app.use('/api/unit', unitRoutes);
 app.use('/api/exits', exitsRoutes);
 
 app.use('/api/order', orderRoutes);
+app.use('/api/purchase', purchaseRoutes);
 
 app.use(history())
 app.use(serveStatic(__dirname + '/dist/spa'))
