@@ -1,5 +1,7 @@
 import orderModel from "../../models/order/orderModel.js";
 import ProductModel from "../../models/products/ProductModel.js"    
+import EntriesModel from "../../models/products/EntriesModel.js";
+
 
 //getProductBySubCategory
 

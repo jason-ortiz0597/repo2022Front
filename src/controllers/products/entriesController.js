@@ -25,6 +25,9 @@ export const createEntries = async (req, res) => {
             //find and update and create new entries
             const entries = await EntriesModel.findOneAndUpdate(
                 { product },
+                //conver date to day/month/year
+                // { $push: { entries: { quantity, price, date, typeEntries, status } }, total },
+                // { new: true }
                 {
                     $push: {
                         entries: {
